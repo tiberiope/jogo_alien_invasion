@@ -25,6 +25,7 @@ class Bullet(Sprite):
 
         #Atualiza a posição decimal do projétil.
         self.y -= self.speed_factor
+
         #Atualiza a posição do rect.
         self.rect.y = self.y
 
