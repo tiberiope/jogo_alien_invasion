@@ -1,6 +1,7 @@
 import sys
 import pygame
 from bullet import Bullet
+from alien import Alien
 
 def check_keydown_events(event, ai_settings, screen, ship, bullets):
     '''Responde aos pressionamentos de tecla.'''
@@ -19,6 +20,9 @@ def check_keydown_events(event, ai_settings, screen, ship, bullets):
 
     elif event.key == pygame.K_SPACE:
         fire_bullet(ai_settings, screen, ship, bullets)
+
+    elif event.key == pygame.K_ESCAPE:
+        sys.exit()
 
 def check_keyup_events(event, ship):
     '''Responde às solturas de teclas.'''
@@ -49,7 +53,7 @@ def check_events(ai_settings, screen, ship, bullets):
             check_keyup_events(event, ship)
 
 
-def update_screen(ai_settings, screen, ship, bullets):
+def update_screen(ai_settings, screen, ship, aliens, bullets):
     # Redesenha a tela a cada passagem pelo laço.
     screen.fill(ai_settings.bg_color)
 
@@ -58,6 +62,7 @@ def update_screen(ai_settings, screen, ship, bullets):
         bullet.draw_bullet()
 
     ship.blitme()
+    aliens.draw(screen)
 
     # Deixa visível a tela mais recente.
     pygame.display.flip()
@@ -69,10 +74,23 @@ def update_bullets(bullets):
         if bullet.rect.bottom <= 0:
             bullets.remove(bullet)
 
-    print((len(bullets)))
-
 def fire_bullet(ai_settings, screen, ship, bullets):
     # Cria um novo projétil e o adiciona ao grupo de projéteis.
     if len(bullets) < ai_settings.bullets_allowed:
         new_bullet = Bullet(ai_settings, screen, ship)
         bullets.add(new_bullet)
+
+def create_fleet(ai_settings, screen, aliens):
+    #Cria um alienígena e calcula o númerode alienígenas em uma linha.
+    #I espaçamento entre os alienígenas é igual à largura de um alienígena.
+    alien = Alien(ai_settings, screen)
+    alien_width = alien.rect.width
+    available_space_x = ai_settings.screen_width - 2 * alien_width
+    number_aliens_x = int(available_space_x/ (2 * alien_width))
+
+    for alien_number in range(number_aliens_x):
+        #Cria um alienígena e o posiciona na linha.
+        alien = Alien(ai_settings, screen)
+        alien.x = alien_width + 2 * alien_width * alien_number
+        alien.rect.x = alien.x
+        aliens.add(alien)
