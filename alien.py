@@ -36,3 +36,4 @@ class Alien(Sprite):
         '''Move o alien para a direira e para a esquerda.'''
         self.x += (self.ai_settings.alien_speed_factor * self.ai_settings.fleet_direction)
         self.rect.x = self.x
+

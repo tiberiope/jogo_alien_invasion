@@ -6,7 +6,10 @@ class Setting():
         self.screen_width = 900
         self.screen_height = 600
         self.bg_color = (230, 230, 230)
+
+        # Configurações da nave.
         self.ship_speed_factor = 1
+        self.ship_limit = 3
 
         # Configurações dos projéteis.
         self.bullet_speed_factor = 0.5
