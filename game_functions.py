@@ -41,7 +41,7 @@ def check_keyup_events(event, ship):
         ship.moving_down = False
 
 
-def check_events(ai_settings, screen, ship, bullets):
+def check_events(ai_settings, screen, stats, play_button, ship, aliens, bullets):
     '''Responde eventos de pressionamento de teclas e de mouse.'''
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -53,8 +53,29 @@ def check_events(ai_settings, screen, ship, bullets):
         elif event.type == pygame.KEYUP:
             check_keyup_events(event, ship)
 
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            mouse_x, mouse_y = pygame.mouse.get_pos()
+            check_play_button(ai_settings, screen, stats, play_button, ship, aliens, bullets, mouse_x, mouse_y)
 
-def update_screen(ai_settings, screen, ship, aliens, bullets):
+
+def check_play_button(ai_settings, screen, stats, play_button, ship, aliens, bullets, mouse_x, mouse_y):
+    '''Inicia um novo jogo quando o jogador clicar em Play.'''
+    if play_button.rect.collidepoint(mouse_x, mouse_y):
+        # Reinicia os dados estatísticos do jogo.
+        if not stats.game_active:
+            stats.reset_stats()
+            stats.game_active = True
+
+            # Esvazia a lista de aliens e de projéteis.
+            aliens.empty()
+            bullets.empty()
+
+            # Cria uma nova frota e centraliza a nave.
+            create_fleet(ai_settings, screen, ship, aliens)
+            ship.center_ship()
+
+
+def update_screen(ai_settings, screen, stats, ship, aliens, bullets, play_button):
     # Redesenha a tela a cada passagem pelo laço.
     screen.fill(ai_settings.bg_color)
 
@@ -64,6 +85,9 @@ def update_screen(ai_settings, screen, ship, aliens, bullets):
 
     ship.blitme()
     aliens.draw(screen)
+
+    if not stats.game_active:
+        play_button.draw_button()
 
     # Deixa visível a tela mais recente.
     pygame.display.flip()
