@@ -256,9 +256,18 @@ def update_aliens(ai_settings, screen, stats, sb, ship, aliens, bullets):
     # Verifica se há algum alien atingiu a parte inferior da tela.
     check_aliens_bottom(ai_settings, screen, stats, sb, ship, aliens, bullets)
 
+def grava_max_score(stats):
+    caminho = 'score.txt'
+    with open(caminho, 'w') as arq_score_max:
+        arq_score_max.write(str(stats.high_score))
+
 
 def check_high_score(stats, sb):
     '''Verifica se há uma nova pontuação máxima.'''
+
     if stats.score > stats.high_score:
         stats.high_score = stats.score
         sb.prep_high_score()
+
+        grava_max_score(stats)
+

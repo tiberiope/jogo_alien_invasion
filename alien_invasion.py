@@ -20,6 +20,7 @@ def run_game():
 
     # Cria uma instância para armazenar dados estatísticos do jogo e cria painel de pontuação.
     stats = GameStats(ai_settings)
+
     sb = Scoreboard(ai_settings, screen, stats)
 
     # Cria a nave, um grupo de projéteis e um grupo de aliens.

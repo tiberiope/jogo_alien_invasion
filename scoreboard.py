@@ -24,8 +24,8 @@ class Scoreboard():
 
     def prep_score(self):
         '''Transforma a pontuação em uma imagem renderizada.'''
-        rounded_score = int(round(self.stats.score, -1))
-        score_str = "{:,}".format(rounded_score)
+        self.stats.score = int(round(self.stats.score, -1))
+        score_str = "{:,}".format(self.stats.score)
         self.score_image = self.font.render(score_str, True, self.text_color, self.ai_settings.bg_color)
 
         # Exibe a pontuação na parte superior direita da tela.
